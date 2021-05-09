@@ -10,16 +10,16 @@
 
 
 (define (chksym ch)
-    (let ([sym-type
-            (cond [(and (char>=? ch #\0)
-                        (char<=? ch #\9)) 'type-number]
-                  [(char=? ch #\.) 'type-point]
-                  [(or (char=? ch #\-)
-                       (char=? ch #\+)) 'type-sign]
-                  [(or (char=? ch #\e)
-                       (char=? ch #\E)) 'type-exponent]
-                  [else 'type-other])]
-          [retval (make-hash)])
+  (let ([sym-type
+         (cond [(and (char>=? ch #\0)
+                     (char<=? ch #\9)) 'type-number]
+               [(char=? ch #\.) 'type-point]
+               [(or (char=? ch #\-)
+                    (char=? ch #\+)) 'type-sign]
+               [(or (char=? ch #\e)
+                    (char=? ch #\E)) 'type-exponent]
+               [else 'type-other])]
+        [retval (make-hash)])
     (begin
       (hash-set! retval 'type sym-type)
       (hash-set! retval 'is-num (eq? sym-type 'type-number))
