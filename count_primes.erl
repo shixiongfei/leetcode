@@ -6,16 +6,19 @@
 
 -spec count_primes(N :: integer()) -> integer().
 count_primes(N) ->
-  count_primes(N, 0, 2, #{N => true}).
+  NotPrimes = ets:new(not_primes, []),
+  ets:insert(NotPrimes, {N, true}),
+  count_primes(N, 0, 2, NotPrimes).
 
 
-mark_notprimes(Step, NotPrimes, Q) when Step > Q -> NotPrimes;
+mark_notprimes(Step, _, Q) when Step > Q -> ok;
 mark_notprimes(Step, NotPrimes, Q) ->
-  lists:foldl(fun(I, M) -> maps:put(Step * I, true, M) end, NotPrimes, lists:seq(Step, Q)).
+  lists:foreach(fun(I) -> ets:insert(NotPrimes, {Step * I, true}) end, lists:seq(Step, Q)).
 
 count_primes(N, Count, Step, _) when Step > N -> Count;
 count_primes(N, Count, Step, NotPrimes) ->
-  case maps:is_key(Step, NotPrimes) of
-    true -> count_primes(N, Count, Step + 1, NotPrimes);
-    false -> count_primes(N, Count + 1, Step + 1, mark_notprimes(Step, NotPrimes, N div Step))
+  case ets:lookup(NotPrimes, Step) of
+    [_] -> count_primes(N, Count, Step + 1, NotPrimes);
+    [] -> mark_notprimes(Step, NotPrimes, N div Step),
+          count_primes(N, Count + 1, Step + 1, NotPrimes)
   end.
