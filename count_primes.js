@@ -16,8 +16,7 @@ var countPrimes = function (n) {
 
   for (let i = 0; i <= n; ++i)
     if (primes[i] > 0)
-      if (i * i < n)
-        for (let j = i; j <= Math.floor(n / i); ++j) primes[j * i] = 0
+      for (let j = i; j <= Math.floor(n / i); ++j) primes[j * i] = 0
 
   return primes.reduce((a, b) => a + b, 0)
 }
