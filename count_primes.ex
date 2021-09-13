@@ -14,12 +14,16 @@ defmodule Solution do
   end
 
   defp mark_notprimes(step, not_primes, q) do
-    step..q
+    step..q//2
     |> Enum.each(fn i -> :ets.insert(not_primes, {step * i, true}) end)
   end
 
   defp count_primes(n, count, step, _) when step > n do
     count
+  end
+
+  defp count_primes(n, count, step, not_primes) when step != 2 and rem(step, 2) == 0 do
+    count_primes(n, count, step + 1, not_primes)
   end
 
   defp count_primes(n, count, step, not_primes) do
