@@ -6,22 +6,13 @@
 
 -spec count_primes(N :: integer()) -> integer().
 count_primes(N) ->
-  NotPrimes = ets:new(not_primes, []),
-  ets:insert(NotPrimes, {N, true}),
-  count_primes(N, 0, 2, NotPrimes).
+  length(lists:filter(fun(X) -> is_prime(X) end, lists:seq(0, N - 1))).
 
 
-mark_notprimes(Step, _, Q) when Step > Q -> ok;
-mark_notprimes(Step, NotPrimes, Q) ->
-  lists:foreach(fun(I) -> ets:insert(NotPrimes, {Step * I, true}) end,
-                lists:seq(Step, Q, 2)).
+is_prime(2) -> true;
+is_prime(N) when N < 2 orelse N rem 2 == 0 -> false;
+is_prime(N) -> is_prime(N, 3).
 
-count_primes(N, Count, Step, _) when Step > N -> Count;
-count_primes(N, Count, Step, NotPrimes) when Step /= 2 andalso Step rem 2 == 0 ->
-  count_primes(N, Count, Step + 1, NotPrimes);
-count_primes(N, Count, Step, NotPrimes) ->
-  case ets:lookup(NotPrimes, Step) of
-    [_] -> count_primes(N, Count, Step + 1, NotPrimes);
-    [] -> mark_notprimes(Step, NotPrimes, N div Step),
-          count_primes(N, Count + 1, Step + 1, NotPrimes)
-  end.
+is_prime(N, K) when N < K * K -> true;
+is_prime(N, K) when N rem K == 0 -> false;
+is_prime(N, K) -> is_prime(N, K + 2).
