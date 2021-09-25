@@ -34,9 +34,9 @@ add_two_numbers(Total, Carry, L1, L2) ->
        end,
 
   S = N1 + N2 + Carry,
-  X = #list_node{val = S rem 10},
+  X = #list_node{val = S rem 10, next = Total},
 
-  add_two_numbers(X#list_node{next = Total}, S div 10, L1Next, L2Next).
+  add_two_numbers(X, S div 10, L1Next, L2Next).
 
 
 -spec add_two_numbers(L1 :: #list_node{} | null, L2 :: #list_node{} | null) -> #list_node{} | null.
