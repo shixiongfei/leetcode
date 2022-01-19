@@ -1,6 +1,9 @@
 -module(sum_of_two_integers).
 -export([get_sum/2]).
 
+%% 两整数之和
+%% https://leetcode-cn.com/problems/sum-of-two-integers/
+
 -spec get_sum(A :: integer(), B :: integer()) -> integer().
 get_sum(A, B) when B == 0 ->
   if
