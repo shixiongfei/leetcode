@@ -11,7 +11,7 @@ let reverseList (list: option<ListNode>) =
             let next = l.next
             let newNode = { value = l.value; next = preNode }
 
-            reverseListHelper (Some(newNode)) next (Some(newNode))
+            reverseListHelper (Some newNode) next (Some newNode)
 
     reverseListHelper list list None
 
@@ -33,6 +33,6 @@ let addTwoNumbers (list1: ListNode) (list2: ListNode) =
             let s = n1 + n2 + carry
             let x = { value = s % 10; next = total }
 
-            addTwoNumbersHelper (Some(x)) (s / 10) l1Next l2Next
+            addTwoNumbersHelper (Some x) (s / 10) l1Next l2Next
 
-    addTwoNumbersHelper None 0 (Some(list1)) (Some(list2))
+    addTwoNumbersHelper None 0 (Some list1) (Some list2)
