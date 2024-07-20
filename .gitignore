@@ -2,3 +2,5 @@
 *.lock
 _build/
 .vscode
+.config
+.fake
